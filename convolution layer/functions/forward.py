@@ -27,7 +27,7 @@ def feedforward(self, input_array):
 
         conv_2d(expand_input,filter_forward.get_weight(),self.output_array[f],self.stride,self.zero_padding,self.filter_forward.get_bias())
 
-    treate_element(self.output_array,self.activator.Relu_function)
+    treate_element(self.output_array,self.activator.Relu_forward)
 
         
 
