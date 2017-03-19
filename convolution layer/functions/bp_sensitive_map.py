@@ -26,7 +26,8 @@ def bp_sensitive_map(self,sensitive_map,activator):
     expand_array = expand_stride(sensitive_map)
 
     # zero_padding
-    zp = (self.output_width - self.input_width + self.filter_width -1)/2
+    expand_width = expand_array.shape[2]
+    zp = (expand_width - self.input_width + self.filter_width -1)/2
 
     padding_array = zero_padding(self.output_array,zp)
 
@@ -36,10 +37,11 @@ def bp_sensitive_map(self,sensitive_map,activator):
 
     for f in range(self.filter_number):
         filters = self.filter[f]
+        flipped_weights = np.array(map(lambda i : np.rot90(i,2),filter.get_weights()))
         
         deltat_each_filter = np.zeros((self.input_depth,self.filter_width,self.filter_height))
         for d in range(self.input_depth):
-            conv_2d(sensitive_map[f],filters[d],deltat_each_filter[d],1,zp,self.bias)
+            conv_2d(sensitive_map[f],flipped_weights[d],deltat_each_filter[d],1,zp,self.bias)
 
         deltat_sensitive += deltat_each_filter
 
